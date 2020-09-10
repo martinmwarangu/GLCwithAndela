@@ -1,0 +1,77 @@
+Error Reporting and Debugging
+
+Objectives
+In this lab, you learn how to perform the following tasks:
+
+-Launch a simple Google App Engine application
+
+-Introduce an error into the application
+
+-Explore Cloud Error Reporting
+
+-Use Cloud Debugger to identify the error in the code
+
+-Fix the bug and monitor in Cloud Operations
+
+
+Task 1: Create an application
+
+	mkdir appengine-hello
+	cd appengine-hello
+	gsutil cp gs://cloud-training/archinfra/gae-hello/* .
+
+	Run the application using the local development server in Cloud Shell with the following command:
+	dev_appserver.py $(pwd)
+
+	Click Web Preview > Preview on port 8080 to view the application, or run the below code:
+	gcloud app browse
+
+	Deploy the application to App Engine, run the following command:
+	gcloud app deploy app.yaml
+
+	Type Y when prompted
+
+	When the process is done, verify that the application is working by running the following command:
+	gcloud app browse
+
+	Examine the main.py file, by running the following command:
+	cat main.py
+
+	Add the specific error by running the code below:
+	sed -i -e 's/webapp2/webapp22/' main.py
+
+	Verify the change you made in the main.py file, run the following command:
+	cat main.py
+
+	Re-deploy the application to App Engine:
+	gcloud app deploy app.yaml --quiet
+
+	When the process is done, verify that the application is broken by running the following command:
+	gcloud app browse
+
+
+Task 2: Explore Cloud Error Reporting	
+
+	In the Cloud Console, on the Navigation menu, click Error Reporting.
+	You should see an error regarding the failed import of webapp22.
+
+	Click Auto reload.
+
+	In Cloud Shell, run the following command:
+	gcloud app browse
+
+	Click the resulting link several times to generate more errors.
+
+	Click the Error name: ImportError: No module named webapp22.
+
+	In Cloud Shell, fix the error by running the following command:
+	sed -i -e 's/webapp22/webapp2/' main.py
+
+	Re-deploy the application to App Engine, run the following command:
+	gcloud app deploy app.yaml --quiet
+
+	Verify that the application is working again, run the following command:
+	gcloud app browse
+
+	Verify by selecting Auto-Reload option, relaoding application and checking the error logs.
+
